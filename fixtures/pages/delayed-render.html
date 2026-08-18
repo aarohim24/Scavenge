@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Delayed Render Product</title>
+    <script>
+      window.__CRAWLBENCH_READY = false;
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          const app = document.getElementById("app");
+          if (app) {
+            app.innerHTML = `
+              <h1 class="product-title">Delayed Render Product</h1>
+              <span class="price" data-currency="INR">₹1,999</span>
+            `;
+          }
+          window.__CRAWLBENCH_READY = true;
+        }, 100);
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <div id="app"></div>
+    </main>
+  </body>
+</html>

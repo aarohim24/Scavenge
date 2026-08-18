@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stale Price Product</title>
+    <script>
+      window.__CRAWLBENCH_READY = false;
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          const price = document.querySelector("span.price");
+          if (price) {
+            price.textContent = "₹1,999";
+          }
+          window.__CRAWLBENCH_READY = true;
+        }, 50);
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1 class="product-title">Stale Price Product</h1>
+      <span class="price" data-currency="INR">₹2,999</span>
+      <p class="availability">In stock</p>
+    </main>
+  </body>
+</html>

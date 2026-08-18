@@ -1,0 +1,317 @@
+[
+  {
+    "task_id": "static-product",
+    "path": "/static-product",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Example Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "Server-rendered, no JavaScript. HTTP alone should be sufficient. Authored by hand from the fixture markup, not from any arm's output."
+  },
+  {
+    "task_id": "jsonld-product",
+    "path": "/jsonld-product",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "JSON-LD Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The visible HTML is sparse, but structured data is present in JSON-LD. HTTP should be sufficient if the extractor reads JSON-LD."
+  },
+  {
+    "task_id": "client-rendered-product",
+    "path": "/client-rendered-product",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Client Rendered Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The initial HTML is a shell. JavaScript renders the product into the DOM. HTTP should fail; warm Playwright should succeed."
+  },
+  {
+    "task_id": "hydration-product",
+    "path": "/hydration-product",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Hydration Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "Embedded hydration data contains the complete record. HTTP should be sufficient if the extractor reads the embedded JSON payload."
+  },
+  {
+    "task_id": "stale-html-price",
+    "path": "/stale-html-price",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Stale Price Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "Raw HTML exposes a plausible stale price of 2999. JavaScript updates the rendered price to 1999. HTTP must be classified FALSE_SUCCESS; warm Playwright must be CORRECT. Ground truth is authored independently of either arm."
+  },
+  {
+    "task_id": "conflicting-prices",
+    "path": "/conflicting-prices",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Conflicting Prices Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The HTML exposes a stale visible price and a conflicting JSON-LD price. JavaScript reconciles the visible price to the current one."
+  },
+  {
+    "task_id": "delayed-render",
+    "path": "/delayed-render",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Delayed Render Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The product appears only after a fixed JavaScript delay. HTTP should fail; warm Playwright should wait for the rendered DOM."
+  },
+  {
+    "task_id": "missing-field",
+    "path": "/missing-field",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Missing Field Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The page never exposes the currency field. Both arms should score FAILED because the record is incomplete."
+  },
+  {
+    "task_id": "failed-client-fetch",
+    "path": "/failed-client-fetch",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Failed Client Fetch Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The server-rendered markup carries the complete, current record. A client-side call to a pricing endpoint fails and its error path replaces the price with an error state. HTTP should be CORRECT; the browser should FAIL, because executing the page destroys data the raw HTML already contained. Ground truth is the server-rendered value, authored by hand from the markup."
+  },
+  {
+    "task_id": "stale-hydration-overwrite",
+    "path": "/stale-hydration-overwrite",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Stale Hydration Overwrite Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The server-rendered price of 1999 is current. A cache-first client store holds a stale snapshot of 2999 and hydration overwrites the correct DOM value with it. HTTP should be CORRECT; the browser should be FALSE_SUCCESS. This is the mirror of stale-html-price and exists so FALSE_SUCCESS is not an HTTP-only outcome. Ground truth is authored by hand and is independent of both arms."
+  },
+  {
+    "task_id": "table",
+    "path": "/table",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Table Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The product record is presented in a table. HTTP should be sufficient if the extractor supports table rows."
+  },
+  {
+    "task_id": "products-101",
+    "path": "/products/101",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Aurora Desk Lamp",
+      "price": 1899,
+      "currency": "INR"
+    },
+    "notes": "Server-rendered product detail page. HTTP is sufficient. Member of the /products URL family."
+  },
+  {
+    "task_id": "products-102",
+    "path": "/products/102",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Cedar Bookend Pair",
+      "price": 1299,
+      "currency": "INR"
+    },
+    "notes": "Server-rendered product detail page. HTTP is sufficient. Member of the /products URL family."
+  },
+  {
+    "task_id": "products-103",
+    "path": "/products/103",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Linen Throw Blanket",
+      "price": 2499,
+      "currency": "INR"
+    },
+    "notes": "Server-rendered product detail page. HTTP is sufficient. Member of the /products URL family."
+  },
+  {
+    "task_id": "listings-201",
+    "path": "/listings/201",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Harbour View Loft",
+      "price": 4500,
+      "currency": "INR"
+    },
+    "notes": "Listing rendered into an empty shell by JavaScript. The browser is required. Member of the /listings URL family."
+  },
+  {
+    "task_id": "listings-202",
+    "path": "/listings/202",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Garden Studio Flat",
+      "price": 3800,
+      "currency": "INR"
+    },
+    "notes": "Listing rendered into an empty shell by JavaScript. The browser is required. Member of the /listings URL family."
+  },
+  {
+    "task_id": "listings-203",
+    "path": "/listings/203",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Riverside Two-Bed",
+      "price": 5200,
+      "currency": "INR"
+    },
+    "notes": "Listing rendered into an empty shell by JavaScript. The browser is required. Member of the /listings URL family."
+  },
+  {
+    "task_id": "deals-301",
+    "path": "/deals/301",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Winter Bundle",
+      "price": 999,
+      "currency": "INR"
+    },
+    "notes": "Server-rendered promotional page. HTTP is sufficient. Member of the /deals URL family."
+  },
+  {
+    "task_id": "deals-302",
+    "path": "/deals/302",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Desk Refresh Bundle",
+      "price": 1499,
+      "currency": "INR"
+    },
+    "notes": "Server-rendered promotional page. HTTP is sufficient. Member of the /deals URL family."
+  },
+  {
+    "task_id": "deals-303",
+    "path": "/deals/303",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Flash Hour Bundle",
+      "price": 1799,
+      "currency": "INR"
+    },
+    "notes": "A flash promotion: the markup ships the pre-discount price of 2599 and the active discount is applied in the browser. Ground truth is the discounted price actually on offer, authored by hand from the template. The browser is required, so this member legitimately differs from the rest of its own URL family, which is what makes /deals a misleading family for URL-based prediction."
+  },
+  {
+    "task_id": "agreeing-sources",
+    "path": "/agreeing-sources",
+    "required_fields": [
+      "name",
+      "price",
+      "currency"
+    ],
+    "expected": {
+      "name": "Agreeing Sources Product",
+      "price": 1999,
+      "currency": "INR"
+    },
+    "notes": "The DOM and the JSON-LD block independently carry the same price of 1999. Purpose declared before implementation: a verifier that rejects on cross-source conflict must accept cross-source agreement, otherwise it would score well merely by distrusting every page that has more than one source. HTTP should be CORRECT and arm E must accept it."
+  }
+]

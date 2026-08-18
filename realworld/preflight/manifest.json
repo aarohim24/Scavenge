@@ -1,0 +1,172 @@
+{
+  "_note": "Expected values recorded by hand from each page's own source/rendering, independently of the extractor. Real pages were saved from accesses the project had already made legitimately. Synthetic pages cover formats the small real corpus cannot supply.",
+  "pages": [
+    {
+      "id": "ikea-raecka",
+      "kind": "real",
+      "url": "https://www.ikea.com/ee/et/p/raecka-kardinapuu-must-00217165/",
+      "language": "et-EE",
+      "expected_visible_price": "3.99",
+      "expected_currency": "EUR",
+      "expected_dom_status": "MULTIPLE_DISTINCT",
+      "expected_jsonld_price": "3.99",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "Main price 3,99 EUR in the price module; JSON-LD Product/Offer carries 3.99 EUR. Related-product cards elsewhere on the page show 3 and 4 EUR, which is why the DOM channel is flagged MULTIPLE_DISTINCT."
+    },
+    {
+      "id": "eu-comma-decimal",
+      "kind": "synthetic",
+      "language": "de",
+      "expected_visible_price": "1234.56",
+      "expected_currency": "EUR",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "1234.56",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "German convention: dot groups, comma is the decimal mark."
+    },
+    {
+      "id": "us-dot-decimal",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "1234.56",
+      "expected_currency": "USD",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "1234.56",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false
+    },
+    {
+      "id": "genuine-conflict",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "29.99",
+      "expected_currency": "GBP",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "39.99",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": true,
+      "note": "The suite must be able to see a real disagreement, not only agreement."
+    },
+    {
+      "id": "nested-price-labels",
+      "kind": "synthetic",
+      "language": "et",
+      "expected_visible_price": "3.99",
+      "expected_currency": "EUR",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "3.99",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "Reproduces the nesting that defeated the original innermost-element rule."
+    },
+    {
+      "id": "no-jsonld",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "12.00",
+      "expected_currency": "GBP",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": null,
+      "expected_jsonld_status": "ABSENT",
+      "expect_conflict": false,
+      "note": "Genuine absence of a channel, not a failure."
+    },
+    {
+      "id": "no-price-anywhere",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": null,
+      "expected_currency": null,
+      "expected_dom_status": "ABSENT",
+      "expected_jsonld_price": null,
+      "expected_jsonld_status": "ABSENT",
+      "expect_conflict": false
+    },
+    {
+      "id": "dom-unparseable",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": null,
+      "expected_currency": null,
+      "expected_dom_status": "PARSE_FAILURE",
+      "expected_jsonld_price": "55.00",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "Parse failure must stay distinguishable from an absent channel."
+    },
+    {
+      "id": "sale-vs-list",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "29.99",
+      "expected_currency": "GBP",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "29.99",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "The struck-through list price must not be selected as the current price."
+    },
+    {
+      "id": "multiple-offers",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "10.00",
+      "expected_currency": "GBP",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "10.00",
+      "expected_jsonld_status": "MULTIPLE_DISTINCT",
+      "expect_conflict": false,
+      "note": "Several offer prices must be surfaced as ambiguous rather than silently reduced to one."
+    },
+    {
+      "id": "ambiguous-separator",
+      "kind": "synthetic",
+      "language": null,
+      "expected_visible_price": null,
+      "expected_currency": null,
+      "expected_dom_status": "PARSE_FAILURE",
+      "expected_jsonld_price": "1234.00",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "EUR with a single comma and three trailing digits, and no page language. Neither currency nor locale resolves it, so the parser must refuse rather than guess."
+    },
+    {
+      "id": "neighbouring-product",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "19.99",
+      "expected_currency": "GBP",
+      "expected_dom_status": "MULTIPLE_DISTINCT",
+      "expected_jsonld_price": "19.99",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "Related-product cards must not be selected over this product's own price."
+    },
+    {
+      "id": "dimension-like-number",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "24.00",
+      "expected_currency": "GBP",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "24.00",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": false,
+      "note": "A price-classed element holding '70-120 cm' is a dimension, not an amount."
+    },
+    {
+      "id": "multi-currency-offers",
+      "kind": "synthetic",
+      "language": "en",
+      "expected_visible_price": "8.14",
+      "expected_currency": "USD",
+      "expected_dom_status": "OK",
+      "expected_jsonld_price": "9.50",
+      "expected_jsonld_status": "OK",
+      "expect_conflict": true,
+      "note": "Amounts differ but currencies differ too; comparison must return AMBIGUOUS_CURRENCY, not CONFLICT. expect_conflict records the raw amount inequality; the comparison test asserts the correct verdict."
+    }
+  ]
+}

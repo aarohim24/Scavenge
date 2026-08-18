@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stale Hydration Overwrite Product</title>
+    <script>
+      // A cache-first client store, rendered into the page by a build that ran
+      // before the current price took effect. The server-rendered markup below is
+      // current; this snapshot is not.
+      window.__CRAWLBENCH_CACHE__ = {"price": 2999, "cached_at": "2026-08-10T00:00:00Z"};
+      window.__CRAWLBENCH_READY = false;
+      window.addEventListener("DOMContentLoaded", () => {
+        // Hydration trusts the client cache over the server-rendered DOM and
+        // overwrites a correct value with a stale one. Revalidation never lands.
+        const cache = window.__CRAWLBENCH_CACHE__;
+        const price = document.querySelector("span.price");
+        if (price && cache) {
+          price.textContent = "₹" + cache.price.toLocaleString("en-IN");
+        }
+        window.__CRAWLBENCH_READY = true;
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1 class="product-title">Stale Hydration Overwrite Product</h1>
+      <span class="price" data-currency="INR">&#8377;1,999</span>
+      <p class="availability">In stock</p>
+    </main>
+  </body>
+</html>

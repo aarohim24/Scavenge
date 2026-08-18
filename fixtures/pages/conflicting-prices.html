@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Conflicting Prices Product</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Conflicting Prices Product",
+        "price": 1999,
+        "priceCurrency": "INR"
+      }
+    </script>
+    <script>
+      window.__CRAWLBENCH_READY = false;
+      window.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          const price = document.querySelector("span.price");
+          if (price) {
+            price.textContent = "₹1,999";
+          }
+          window.__CRAWLBENCH_READY = true;
+        }, 50);
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1 class="product-title">Conflicting Prices Product</h1>
+      <span class="price" data-currency="INR">₹2,999</span>
+    </main>
+  </body>
+</html>

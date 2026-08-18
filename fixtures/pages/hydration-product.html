@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hydration Product</title>
+    <script>
+      // Serialized as JSON, the way real hydration payloads (__NEXT_DATA__, __NUXT__)
+      // are emitted. This is what makes the fixture readable without a browser.
+      window.__CRAWLBENCH_DATA__ = {"name": "Hydration Product", "price": 1999, "currency": "INR"};
+      window.__CRAWLBENCH_READY = false;
+      window.addEventListener("DOMContentLoaded", () => {
+        const app = document.getElementById("app");
+        if (app && window.__CRAWLBENCH_DATA__) {
+          const { name, price, currency } = window.__CRAWLBENCH_DATA__;
+          app.innerHTML = `
+            <h1 class="product-title">${name}</h1>
+            <span class="price" data-currency="${currency}">₹${price.toLocaleString("en-IN")}</span>
+          `;
+        }
+        window.__CRAWLBENCH_READY = true;
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <div id="app"></div>
+    </main>
+  </body>
+</html>

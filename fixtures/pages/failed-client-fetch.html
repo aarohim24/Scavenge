@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Failed Client Fetch Product</title>
+    <script>
+      window.__CRAWLBENCH_READY = false;
+      window.addEventListener("DOMContentLoaded", () => {
+        // The page ships a correct server-rendered price, then asks a pricing
+        // endpoint to confirm it. The endpoint does not exist, so the error path
+        // replaces the good SSR value with an error state — the data a browser
+        // sees is strictly worse than the data already present in the raw HTML.
+        fetch("/api-price-unavailable")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("price service unavailable");
+            }
+            return response.json();
+          })
+          .catch(() => {
+            const price = document.querySelector("span.price");
+            if (price) {
+              price.textContent = "Price unavailable";
+            }
+          })
+          .finally(() => {
+            window.__CRAWLBENCH_READY = true;
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1 class="product-title">Failed Client Fetch Product</h1>
+      <span class="price" data-currency="INR">&#8377;1,999</span>
+      <p class="availability">In stock</p>
+    </main>
+  </body>
+</html>
