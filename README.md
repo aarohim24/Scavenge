@@ -1,10 +1,11 @@
 # Scavenge — deterministic web evidence for humans and coding agents
 
-`scavenge` inspects one field on one web page and reports **every place that field appears**,
+Scavenge inspects one field on one web page and reports **every place that field appears**,
 what each representation says, and exactly where each value came from.
 
-It does not tell you which value is correct. That judgement needs to know what the page
-means, and this engine is deliberately incapable of it.
+**It collects field observations with exact provenance. It does not determine which
+observation is semantically correct.** That judgement needs to know what the page means,
+and the engine is deliberately incapable of it — see [Why it stops there](#why-it-stops-there).
 
 ## What it does
 
@@ -41,6 +42,23 @@ A page states the same fact in several places — visible HTML, JSON-LD, a hydra
 the rendered DOM, an XHR response — and they disagree more often than you would like.
 Working out which ones carry your field is a DevTools job, done by hand, once per target,
 forever. An agent can do it too, but not reproducibly and not with exact provenance.
+
+## Why it stops there
+
+The original goal was more ambitious: decide deterministically whether values found in
+different representations referred to the same real-world thing, and report where they
+agreed or disagreed.
+
+Real storefronts broke that assumption. Values that looked comparable belonged to
+recommendation carousels, carts, financing tables, store locators, product variants, and
+second `Product` blocks on the same page. A validation run across 12 storefronts found that
+**every** disagreement the engine reported was of that kind — the values and provenance were
+right, the comparison was wrong.
+
+Fixing it properly turns into entity resolution. So Scavenge stops one step earlier:
+**collect the evidence deterministically and let a human or an agent interpret it.** The
+full account, including the results that killed the earlier design, is in
+[`docs/research/`](docs/research/README.md).
 
 ## Supported fields
 
@@ -107,10 +125,12 @@ One engine. Both interfaces call it; a test asserts the CLI's JSON is the engine
 ## Install
 
 ```bash
-pip install -e .
+pip install git+https://github.com/aarohim24/Scavenge.git
 python -m playwright install chromium     # required for rendered DOM and network channels
 scavenge inspect https://example.com/p/1 --field price
 ```
+
+Not on PyPI yet — deliberately, until the API has survived a round of external feedback.
 
 `--no-render` skips the browser and reports the HTTP-only channels.
 
