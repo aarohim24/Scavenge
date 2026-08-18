@@ -1,0 +1,93 @@
+[project]
+name = "scavenge"
+version = "0.1.0.dev0"
+description = "A deterministic web-evidence engine: trace a field across a page's representations."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["web-scraping", "provenance", "mcp", "structured-data", "playwright"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+]
+requires-python = ">=3.12"
+dependencies = [
+    # Arrives with the extra below, but pinned here because the adaptive handler
+    # imports it directly to type Crawlee's static-parser context.
+    "beautifulsoup4==4.15.0",
+    # The adaptive-crawler extra supplies jaro-winkler and scikit-learn, which
+    # DefaultRenderingTypePredictor imports directly.
+    "crawlee[adaptive-crawler]==1.9.2",
+    "httpx==0.28.1",
+    "playwright==1.62.0",
+    "psutil==7.2.2",
+    "mcp==2.0.0",
+    "selectolax==0.4.11",
+]
+
+[project.scripts]
+scavenge = "scavenge.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.16.3",
+    "mypy==2.3.1",
+]
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["scavenge"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# The research reports quote upstream source verbatim inside fenced code blocks.
+# Formatting must never rewrite a quotation.
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "PT", "SIM", "RET", "ARG", "PL"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+files = ["crawlbench", "fixtures", "research", "scavenge", "tests"]
+
+[[tool.mypy.overrides]]
+module = "selectolax.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "playwright.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "psutil"
+ignore_missing_imports = true
+
+# The MCP SDK ships no stubs; the tool decorator is therefore untyped.
+[[tool.mypy.overrides]]
+module = "mcp.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "scavenge.mcp"
+disallow_untyped_decorators = false
+
+# `probe` reaches into realworld.frame, which pulls in realworld.collect. That module
+# predates this check and belongs to the paused Arm E sampling work, which must stay
+# untouched; the gap is httpx's untyped `Retry-After` handling at collect.py:126.
+[[tool.mypy.overrides]]
+module = "realworld.collect"
+disable_error_code = ["no-any-return"]
