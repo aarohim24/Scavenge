@@ -1,10 +1,9 @@
 {
-  "_note": "Expected values recorded by hand from each page's own source/rendering, independently of the extractor. Real pages were saved from accesses the project had already made legitimately. Synthetic pages cover formats the small real corpus cannot supply.",
+  "_note": "Expected values recorded by hand from each page's own source/rendering, independently of the extractor. All pages are synthetic. The one saved real page was replaced by a minimal synthetic reproduction of the structure it protected, verified equivalent on every asserted property, so the repository carries no third-party page content.",
   "pages": [
     {
-      "id": "ikea-raecka",
-      "kind": "real",
-      "url": "https://www.ikea.com/ee/et/p/raecka-kardinapuu-must-00217165/",
+      "id": "nested-split-price",
+      "kind": "synthetic",
       "language": "et-EE",
       "expected_visible_price": "3.99",
       "expected_currency": "EUR",
@@ -12,7 +11,7 @@
       "expected_jsonld_price": "3.99",
       "expected_jsonld_status": "OK",
       "expect_conflict": false,
-      "note": "Main price 3,99 EUR in the price module; JSON-LD Product/Offer carries 3.99 EUR. Related-product cards elsewhere on the page show 3 and 4 EUR, which is why the DOM channel is flagged MULTIPLE_DISTINCT."
+      "note": "Replaces a ~950 KB saved IKEA product page, reproducing only the structure that defeated the original DOM selection rule: a price module that nests price-labelled elements and splits the amount across separate integer, separator, decimal and currency spans, so the innermost element is '3', ',' or '€' rather than a price. Related-product cards showing 3€ and 4€ make the DOM channel MULTIPLE_DISTINCT, as the real page did. Equivalence with the saved page was verified on every asserted property before the original was removed."
     },
     {
       "id": "eu-comma-decimal",

@@ -91,7 +91,7 @@ def test_conflict_detection_matches_expectation(page_id: str, page: dict[str, An
 
 def test_every_candidate_retains_provenance() -> None:
     """A later audit must be able to see what was considered and what was chosen."""
-    html = _html("ikea-raecka")
+    html = _html("nested-split-price")
     result = dom_prices(html, page_language(html))
 
     assert result.candidates
@@ -114,8 +114,8 @@ def test_parse_failure_and_absence_are_different_statuses() -> None:
 
 
 def test_the_original_pilot_failure_no_longer_reproduces() -> None:
-    """0 of 55 real pages yielded a DOM price under the old rule; this one now does."""
-    html = _html("ikea-raecka")
+    """0 of 55 real pages yielded a DOM price under the old rule; this structure now does."""
+    html = _html("nested-split-price")
     result = dom_prices(html, page_language(html))
 
     assert result.chosen is not None
@@ -131,7 +131,7 @@ def test_the_original_pilot_failure_no_longer_reproduces() -> None:
         ("multiple-offers", "AMBIGUOUS_MULTIPLE_OFFERS"),
         ("no-jsonld", "NOT_COMPARABLE"),
         ("dom-unparseable", "NOT_COMPARABLE"),
-        ("ikea-raecka", "AMBIGUOUS_MULTIPLE_OFFERS"),
+        ("nested-split-price", "AMBIGUOUS_MULTIPLE_OFFERS"),
         ("sale-vs-list", "AGREE"),
         ("eu-comma-decimal", "AGREE"),
     ],

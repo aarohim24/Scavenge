@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+  Synthetic replacement for a saved IKEA product page (ikea-raecka), which was ~950 KB of
+  third-party HTML. It reproduces the exact structure that defeated the original pilot's
+  DOM selection rule, and nothing else.
+
+  The defect: the price module nests price-labelled elements, and the innermost ones hold
+  the amount *split into pieces* — integer, separator, decimal and currency in separate
+  spans. The original rule took the innermost price-labelled element, so it selected "3",
+  "," or "€", none of which is a price. A later draft took the shortest text and selected a
+  neighbouring product's "3€" instead of this product's "3,99€".
+
+  The current rule survives both because it requires a candidate's text to carry a currency
+  indicator and takes the first remaining element in document order. The related-product
+  cards below are what make the DOM channel MULTIPLE_DISTINCT, exactly as the real page did.
+-->
+<html lang="et-EE">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kardinapuu</title>
+    <script type="application/ld+json">
+      {"@type":"Product","name":"Kardinapuu","offers":{"@type":"Offer","price":"3.99","priceCurrency":"EUR"}}
+    </script>
+  </head>
+  <body>
+    <main>
+      <div class="price-module__information">
+        <span class="price-module__name-decorator">RÄCKA</span>
+        <span class="price-module__description">Kardinapuu, must, 70-120 cm</span>
+      </div>
+
+      <div class="price-module__price">
+        <div class="price-module__primary-currency-price">
+          <span class="price price--trailing">
+            <span class="price__nowrap">
+              <span class="price__integer">3</span><span class="price__separator">,</span
+              ><span class="price__decimal">99</span><span class="price__currency">€</span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </main>
+
+    <aside>
+      <h2>Sobib hästi juurde</h2>
+      <div class="product-card"><span class="price">3€</span></div>
+      <div class="product-card"><span class="price">4€</span></div>
+    </aside>
+  </body>
+</html>
