@@ -8,6 +8,7 @@ arms use.
 
 from __future__ import annotations
 
+import os
 import random
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
@@ -55,6 +56,20 @@ def naive_checker(result: RequestHandlerRunResult) -> bool:
 # C takes Crawlee's defaults. D1 supplies only the checker, which is what silently
 # replaces cross-mode comparison (CONFIRMATION-PASS.md §4a). D2 supplies the same
 # checker plus the comparator Crawlee would otherwise have used.
+def _launch_options() -> dict[str, Any]:
+    """Crawlee launches a *persistent* browser context, which the Chromium sandbox refuses
+    inside unprivileged CI containers — `launch_persistent_context` closes immediately and
+    every request fails with NoResultCommitted. Our own Playwright arm is unaffected because
+    it uses an ordinary launch.
+
+    Disabling the sandbox is the documented workaround for that environment and is applied
+    only there, so local and benchmark-of-record runs keep the default sandbox.
+    """
+    if os.environ.get("CI"):
+        return {"args": ["--no-sandbox", "--disable-dev-shm-usage"]}
+    return {}
+
+
 ARM_POLICIES: dict[ExecutionMode, tuple[ResultChecker | None, ResultComparator | None]] = {
     ExecutionMode.CRAWLEE_C: (None, None),
     ExecutionMode.CRAWLEE_D1: (naive_checker, None),
@@ -123,6 +138,7 @@ async def run_adaptive_arm(  # noqa: PLR0913 - independent experiment coordinate
         result_checker=checker,
         result_comparator=comparator,
         configuration=Configuration(storage_dir=str(storage_dir), purge_on_start=True),
+        playwright_crawler_specific_kwargs={"browser_launch_options": _launch_options()},
     )
 
     @crawler.router.default_handler
